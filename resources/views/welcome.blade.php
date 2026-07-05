@@ -72,7 +72,7 @@
             @foreach($featuredProducts as $product)
             <a href="{{ route('product.show', $product) }}" class="group relative bg-white border border-gray-100 rounded-2xl p-4 hover:shadow-lg transition-shadow flex flex-col">
                 <div class="w-full min-h-48 bg-gray-200 aspect-w-1 aspect-h-1 rounded-xl overflow-hidden mb-4">
-                    <img src="{{ $product->image ?? 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-full object-center object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-full object-center object-cover group-hover:scale-105 transition-transform duration-300">
                 </div>
                 <div class="flex-1 flex flex-col justify-between">
                     <div>

@@ -40,7 +40,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('product-images', 'public');
-            $validated['image'] = asset('storage/' . $path);
+            $validated['image'] = $path;
         }
 
         Inventory::create($validated);
@@ -71,7 +71,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('product-images', 'public');
-            $validated['image'] = asset('storage/' . $path);
+            $validated['image'] = $path;
         } else {
             unset($validated['image']);
         }
@@ -94,7 +94,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('product-images', 'public');
-            $product->update(['image' => asset('storage/' . $path)]);
+            $product->update(['image' => $path]);
         }
 
         return response()->json(['success' => true]);

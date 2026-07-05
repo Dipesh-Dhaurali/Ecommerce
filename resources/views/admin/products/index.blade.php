@@ -27,7 +27,7 @@
                 @forelse($products as $product)
                 <tr class="hover:bg-gray-50/50 transition-colors">
                     <td class="px-6 py-4 flex items-center gap-4">
-                        <img onclick="openImageModal({{ $product->id }})" src="{{ $product->image ?? 'https://via.placeholder.com/40' }}" alt="{{ $product->name }}" class="w-12 h-12 rounded-lg object-cover border border-gray-200 cursor-pointer hover:border-indigo-500 transition-colors">
+                        <img onclick="openImageModal({{ $product->id }})" src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/40' }}" alt="{{ $product->name }}" class="w-12 h-12 rounded-lg object-cover border border-gray-200 cursor-pointer hover:border-indigo-500 transition-colors">
                         <div>
                             <p class="font-medium text-gray-800">{{ $product->name }}</p>
                         </div>
@@ -87,19 +87,29 @@
 
 <!-- Image Update Modals -->
 @foreach($products as $product)
-<div id="imageModal-{{ $product->id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 hidden">
-    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
-        <h3 class="text-xl font-bold text-gray-900 mb-4">Update Product Image</h3>
-        <p class="text-sm text-gray-600 mb-4">Product: {{ $product->name }}</p>
+<div id="imageModal-{{ $product->id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+    <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-100 transform transition-all">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-image text-indigo-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-gray-900">Update Product Image</h3>
+                <p class="text-sm text-gray-500">{{ $product->name }}</p>
+            </div>
+        </div>
         <form id="imageForm-{{ $product->id }}">
             @csrf
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Image</label>
-                <input type="file" id="imageInput-{{ $product->id }}" name="image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-3">Upload New Image</label>
+                <div class="relative">
+                    <input type="file" id="imageInput-{{ $product->id }}" name="image" accept="image/*" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Supported formats: JPEG, PNG, JPG, GIF (Max 2MB)</p>
             </div>
-            <div class="flex gap-4">
-                <button type="button" onclick="closeImageModal({{ $product->id }})" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
-                <button type="submit" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">Update Image</button>
+            <div class="flex gap-3">
+                <button type="button" onclick="closeImageModal({{ $product->id }})" class="flex-1 px-4 py-3 border-2 border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors">Cancel</button>
+                <button type="submit" class="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg shadow-indigo-200">Update Image</button>
             </div>
         </form>
     </div>

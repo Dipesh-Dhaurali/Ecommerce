@@ -33,7 +33,7 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('category-images', 'public');
-            $validated['image'] = asset('storage/' . $path);
+            $validated['image'] = $path;
         }
 
         Category::create($validated);
@@ -60,7 +60,7 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('category-images', 'public');
-            $validated['image'] = asset('storage/' . $path);
+            $validated['image'] = $path;
         } else {
             unset($validated['image']);
         }

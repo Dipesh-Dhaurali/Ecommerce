@@ -10,7 +10,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
-            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-96 object-cover">
+            <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-96 object-cover">
         </div>
         
         <div>
