@@ -58,7 +58,8 @@ class HomeController extends Controller
             'customer_name' => 'required|string|max:255',
             'customer_phone' => 'required|string|max:50',
             'customer_address' => 'required|string|max:500',
-            'payment_method' => 'required|in:cash,card',
+            'payment_method' => 'required|in:cash,mobile',
+            'payment_screenshot' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'items' => 'required|string', // JSON string from local storage
         ]);
 
@@ -98,6 +99,12 @@ class HomeController extends Controller
                 ];
             }
 
+            // Handle payment screenshot upload
+            $paymentScreenshotPath = null;
+            if ($request->hasFile('payment_screenshot')) {
+                $paymentScreenshotPath = $request->file('payment_screenshot')->store('payment-screenshots', 'public');
+            }
+
             $order = Order::create([
                 'user_id' => auth()->id(), 
                 'customer_name' => $validated['customer_name'],
@@ -109,6 +116,7 @@ class HomeController extends Controller
                 'total' => $subtotal,
                 'payment_status' => 'pending',
                 'payment_method' => $validated['payment_method'],
+                'payment_screenshot' => $paymentScreenshotPath,
             ]);
 
             // Insert all order items at once

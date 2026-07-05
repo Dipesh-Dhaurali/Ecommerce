@@ -86,6 +86,15 @@
                     <p class="text-gray-600">Payment Method</p>
                     <p class="font-medium text-gray-900">{{ ucfirst($order->payment_method) }}</p>
                 </div>
+                @if($order->payment_method === 'mobile' && $order->payment_screenshot)
+                <div class="mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-gray-600 mb-2">Payment Screenshot</p>
+                    <div class="relative">
+                        <img src="{{ asset('storage/' . $order->payment_screenshot) }}" alt="Payment Screenshot" class="w-full max-w-xs rounded-lg border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity" onclick="window.open('{{ asset('storage/' . $order->payment_screenshot) }}', '_blank')">
+                        <p class="text-xs text-gray-400 mt-1">Click to view full size</p>
+                    </div>
+                </div>
+                @endif
                 <div class="flex justify-between items-center">
                     <p class="text-gray-600">Payment Status</p>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ 

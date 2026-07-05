@@ -41,7 +41,7 @@ class PosController extends Controller
             'items' => 'required|array',
             'items.*.id' => 'required|exists:inventories,id',
             'items.*.quantity' => 'required|integer|min:1',
-            'payment_method' => 'required|string',
+            'payment_method' => 'required|string|in:cash,online',
             'customer_name' => 'nullable|string',
             'customer_phone' => 'nullable|string',
         ]);

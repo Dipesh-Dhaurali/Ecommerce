@@ -63,7 +63,7 @@
 
         <!-- Checkout form -->
         <div class="lg:col-span-7">
-            <form action="{{ route('checkout.store') }}" method="POST" @submit="prepareSubmit" class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 sm:p-8">
+            <form action="{{ route('checkout.store') }}" method="POST" enctype="multipart/form-data" @submit="prepareSubmit" class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 sm:p-8">
                 @csrf
                 <input type="hidden" name="items" x-model="itemsJson">
 
@@ -97,17 +97,32 @@
 
                     <div class="space-y-4">
                         <div class="flex items-center">
-                            <input id="payment_cash" name="payment_method" type="radio" value="cash" checked class="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300">
+                            <input id="payment_cash" name="payment_method" type="radio" value="cash" x-model="paymentMethod" class="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300">
                             <label for="payment_cash" class="ml-3 block text-sm font-medium text-gray-700">
                                 Cash on Delivery
                             </label>
                         </div>
                         <div class="flex items-center">
-                            <input id="payment_card" name="payment_method" type="radio" value="card" class="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300">
-                            <label for="payment_card" class="ml-3 block text-sm font-medium text-gray-700">
-                                Card on Delivery (POS terminal will be provided)
+                            <input id="payment_mobile" name="payment_method" type="radio" value="mobile" x-model="paymentMethod" class="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300">
+                            <label for="payment_mobile" class="ml-3 block text-sm font-medium text-gray-700">
+                                Mobile Banking
                             </label>
                         </div>
+                    </div>
+
+                    <!-- QR Code Display -->
+                    <div x-show="paymentMethod === 'mobile'" x-transition class="mt-6 flex justify-center">
+                        <div class="bg-white border-2 border-gray-200 rounded-xl p-4 text-center">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YOUR_PAYMENT_INFO" alt="Payment QR Code" class="w-48 h-48 mx-auto mb-2">
+                            <p class="text-sm text-gray-600">Scan to pay via mobile banking</p>
+                        </div>
+                    </div>
+
+                    <!-- Payment Screenshot Upload (Optional) -->
+                    <div x-show="paymentMethod === 'mobile'" x-transition class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Payment Screenshot (Optional)</label>
+                        <p class="text-xs text-gray-500 mb-3">Upload screenshot of your payment confirmation</p>
+                        <input type="file" name="payment_screenshot" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                     </div>
                 </div>
 
@@ -126,9 +141,16 @@
         Alpine.data('checkoutPage', () => ({
             cart: JSON.parse(localStorage.getItem('cart') || '[]'),
             itemsJson: '',
+            paymentMethod: 'cash',
             
             init() {
                 this.itemsJson = JSON.stringify(this.cart);
+                // Listen for payment method changes
+                this.$watch('paymentMethod', (value) => {
+                    // Update the radio button when state changes
+                    const radio = document.querySelector(`input[name="payment_method"][value="${value}"]`);
+                    if (radio) radio.checked = true;
+                });
             },
 
             get cartTotal() {

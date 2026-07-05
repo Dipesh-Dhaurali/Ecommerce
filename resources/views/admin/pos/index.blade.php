@@ -98,10 +98,18 @@
                         <input type="radio" x-model="paymentMethod" value="cash" class="hidden">
                         <i class="fa-solid fa-money-bill"></i> Cash
                     </label>
-                    <label class="flex items-center justify-center gap-2 p-3 border rounded-xl cursor-pointer transition-colors" :class="paymentMethod === 'card' ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 hover:bg-gray-50 text-gray-600'">
-                        <input type="radio" x-model="paymentMethod" value="card" class="hidden">
-                        <i class="fa-solid fa-credit-card"></i> Card
+                    <label class="flex items-center justify-center gap-2 p-3 border rounded-xl cursor-pointer transition-colors" :class="paymentMethod === 'online' ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 hover:bg-gray-50 text-gray-600'">
+                        <input type="radio" x-model="paymentMethod" value="online" class="hidden">
+                        <i class="fa-solid fa-qrcode"></i> Online
                     </label>
+                </div>
+
+                <!-- QR Code Display -->
+                <div x-show="paymentMethod === 'online'" x-transition class="mb-4 flex justify-center">
+                    <div class="bg-white border-2 border-gray-200 rounded-xl p-4 text-center">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YOUR_PAYMENT_INFO" alt="Payment QR Code" class="w-48 h-48 mx-auto mb-2">
+                        <p class="text-sm text-gray-600">Scan to pay online</p>
+                    </div>
                 </div>
 
                 <button @click="checkout" :disabled="cart.length === 0 || processing" class="w-full py-3 px-4 bg-green-600 text-white rounded-xl font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-700 transition-colors shadow-sm shadow-green-200">
@@ -158,9 +166,20 @@ document.addEventListener('alpine:init', () => {
         },
 
         clearCart() {
-            if(confirm('Are you sure you want to clear the cart?')) {
-                this.cart = [];
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, clear it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.cart = [];
+                    Swal.fire('Cleared!', 'Cart has been cleared.', 'success');
+                }
+            });
         },
 
         get cartTotal() {
@@ -179,12 +198,24 @@ document.addEventListener('alpine:init', () => {
                 });
                 
                 if (response.data.success) {
-                    alert('Sale Completed Successfully!');
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Sale completed successfully!',
+                        icon: 'success',
+                        confirmButtonColor: '#10b981',
+                        confirmButtonText: 'Great!'
+                    });
                     this.cart = [];
                     this.searchProducts(); // refresh stock
                 }
             } catch (error) {
-                alert('Error completing sale: ' + (error.response?.data?.message || error.message));
+                Swal.fire({
+                    title: 'Error!',
+                    text: error.response?.data?.message || error.message,
+                    icon: 'error',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
             } finally {
                 this.processing = false;
             }
