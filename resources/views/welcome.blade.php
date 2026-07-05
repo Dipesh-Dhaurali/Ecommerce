@@ -83,6 +83,13 @@
                     </div>
                     <div class="mt-4 flex items-center justify-between z-20 relative">
                         <p class="text-lg font-bold text-green-600">Rs. {{ number_format($product->price, 2) }}</p>
+                        @if($product->stock > 0)
+                        <button @click.stop.prevent="addToCart({{ json_encode(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'image' => $product->image]) }})" class="p-2.5 bg-green-50 text-green-600 hover:bg-green-600 hover:text-white rounded-xl transition-colors" title="Add to Cart">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                        @else
+                        <span class="text-xs text-red-500 font-medium">Out of Stock</span>
+                        @endif
                     </div>
                 </div>
             </a>

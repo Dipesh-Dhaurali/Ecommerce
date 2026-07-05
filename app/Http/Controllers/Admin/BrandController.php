@@ -28,4 +28,25 @@ class BrandController extends Controller
         Brand::create($validated);
         return redirect()->route('admin.brands.index')->with('success', 'Brand created successfully!');
     }
+
+    public function edit(Brand $brand)
+    {
+        return view('admin.brands.edit', compact('brand'));
+    }
+
+    public function update(Request $request, Brand $brand)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $brand->update($validated);
+        return redirect()->route('admin.brands.index')->with('success', 'Brand updated successfully!');
+    }
+
+    public function destroy(Brand $brand)
+    {
+        $brand->delete();
+        return redirect()->route('admin.brands.index')->with('success', 'Brand deleted successfully!');
+    }
 }

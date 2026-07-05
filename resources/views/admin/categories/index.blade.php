@@ -36,9 +36,18 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="text-gray-400 hover:text-red-600 transition-colors p-2">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </a>
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-gray-400 hover:text-green-600 transition-colors p-2">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors p-2">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty

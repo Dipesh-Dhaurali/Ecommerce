@@ -40,7 +40,7 @@
             
             <div class="flex gap-4">
                 @if($product->stock > 0)
-                <button onclick="addToCart({{ json_encode(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'image' => $product->image]) }})" class="flex-1 px-8 py-4 bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg">
+                <button @click="addToCart({{ json_encode(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'image' => $product->image]) }})" class="flex-1 px-8 py-4 bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg">
                     <i class="fa-solid fa-cart-plus mr-2"></i> Add to Cart
                 </button>
                 @endif

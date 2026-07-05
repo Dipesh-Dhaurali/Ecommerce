@@ -41,4 +41,36 @@ class ProductController extends Controller
         Inventory::create($validated);
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
     }
+
+    public function edit(Inventory $product)
+    {
+        $categories = Category::all();
+        $brands = Brand::all();
+        return view('admin.products.edit', compact('product', 'categories', 'brands'));
+    }
+
+    public function update(Request $request, Inventory $product)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
+            'image' => 'nullable|url',
+        ]);
+
+        if ($validated['name'] !== $product->name) {
+            $validated['slug'] = Str::slug($validated['name']) . '-' . rand(1000, 9999);
+        }
+
+        $product->update($validated);
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
+    }
+
+    public function destroy(Inventory $product)
+    {
+        $product->delete();
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
+    }
 }

@@ -1,64 +1,72 @@
-<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# e-mart (E-Commerce Web Application)
 
-## About Laravel
+A modern, full-stack e-commerce web application built with **Laravel 12 (PHP)** and styled using **Tailwind CSS v4** with **Alpine.js** for interactive frontend features.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project implements all core features required for a full-scale e-commerce operations, including:
+* **Storefront:** Browse trending products, search instantly, filter by category/brand, view reviews, and place orders.
+* **Point of Sale (POS):** Walk-in customer management system with live search and automated transaction processing.
+* **Admin Dashboard:** Total sales charts, low stock alerts, catalog CRUD, and Excel spreadsheet exports.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technical Stack
+* **Framework:** Laravel 12.x
+* **Language:** PHP ^8.2
+* **Styling:** Tailwind CSS v4.x
+* **Reactivity:** Alpine.js ^3.15
+* **Report Generation:** Maatwebsite Excel ^3.1
+* **Vite:** Asset build management
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Installation & Setup
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Clone the Repository:**
+   ```bash
+   git clone <repository-url>
+   cd e-mart
+   ```
 
-## Laravel Sponsors
+2. **Run the Initialization Setup:**
+   Run the project setup script or run composer:
+   ```bash
+   composer install
+   npm install
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. **Configure Environment Variables:**
+   Copy the example file to `.env`:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-### Premium Partners
+4. **Initialize Database & Seed Data:**
+   Create the database and run migrations with seed data:
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. **Start Dev Server:**
+   Launch the Artisan development server and Vite compilation:
+   ```bash
+   npm run dev
+   ```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## User Accounts (Seeded)
 
-## Code of Conduct
+* **Admin User:** `admin@e-mart.test` (Password: `password`)
+* **Customer User:** `customer@e-mart.test` (Password: `password`)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Testing
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# Ecommerce
-A full-stack e-commerce web application built with Django (Python) that allows users to browse products, add items to cart, and place orders.  This project demonstrates Django concepts including models, CRUD operations, authentication, cart system, and database integration.
->>>>>>> 605584b90ea03f8e79187325e91e0659c4174c07
+Run the feature test suite:
+```bash
+php artisan test
+```

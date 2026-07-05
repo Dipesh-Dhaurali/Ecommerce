@@ -24,9 +24,18 @@
                 <tr class="hover:bg-gray-50/50 transition-colors">
                     <td class="px-6 py-4 font-medium text-gray-800">{{ $brand->name }}</td>
                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="text-gray-400 hover:text-red-600 transition-colors p-2">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </a>
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('admin.brands.edit', $brand) }}" class="text-gray-400 hover:text-green-600 transition-colors p-2">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this brand?');" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors p-2">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
