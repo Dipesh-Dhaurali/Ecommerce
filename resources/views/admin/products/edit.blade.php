@@ -50,8 +50,66 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Image URL (Optional)</label>
-                    <input type="url" name="image" value="{{ old('image', $product->image) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="https://example.com/image.jpg">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
+                    <div x-data="{ imageModalOpen: false }">
+                        <div @click="imageModalOpen = true" class="cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-indigo-500 transition-colors">
+                            @if($product->image)
+                                <img src="{{ $product->image }}" alt="{{ $product->name }}" class="h-32 object-contain mx-auto">
+                            @else
+                                <div class="text-center text-gray-500">
+                                    <i class="fa-solid fa-image text-3xl mb-2"></i>
+                                    <p>Click to add image</p>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <!-- Image Update Modal -->
+                        <div x-show="imageModalOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" @click.self="imageModalOpen = false">
+                            <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+                                <h3 class="text-xl font-bold text-gray-900 mb-4">Update Product Image</h3>
+                                <form x-data="{ updating: false }" @submit.prevent="
+                                    updating = true;
+                                    const formData = new FormData();
+                                    const fileInput = document.getElementById('imageInput');
+                                    
+                                    if (fileInput.files.length > 0) {
+                                        formData.append('image', fileInput.files[0]);
+                                    }
+                                    formData.append('_token', document.querySelector('meta[name=\"csrf-token\"]').getAttribute('content'));
+                                    
+                                    fetch('{{ route('admin.products.updateImage', $product) }}', {
+                                        method: 'POST',
+                                        body: formData
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if(data.success) {
+                                            location.reload();
+                                        } else {
+                                            alert('Error updating image');
+                                            updating = false;
+                                        }
+                                    })
+                                    .catch(error => {
+                                        alert('Error updating image');
+                                        updating = false;
+                                    });
+                                ">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Image</label>
+                                        <input type="file" id="imageInput" name="image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    </div>
+                                    <div class="flex gap-4">
+                                        <button type="button" @click="imageModalOpen = false" :disabled="updating" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+                                        <button type="submit" :disabled="updating" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                            <span x-show="!updating">Update Image</span>
+                                            <span x-show="updating">Updating...</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

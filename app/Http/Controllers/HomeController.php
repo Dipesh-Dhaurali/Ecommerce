@@ -144,9 +144,14 @@ class HomeController extends Controller
     public function productShow(Inventory $product)
     {
         $product->load(['reviews' => function($q) {
-            $q->where('approved', true)->latest();
+            $q->latest();
         }, 'reviews.user']);
         
-        return view('product', compact('product'));
+        $relatedProducts = Inventory::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->limit(4)
+            ->get();
+        
+        return view('product', compact('product', 'relatedProducts'));
     }
 }

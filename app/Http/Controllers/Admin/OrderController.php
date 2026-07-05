@@ -23,12 +23,23 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'status' => 'required|in:pending,processing,delivered,cancelled'
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled,sales_return'
         ]);
 
         $order->update(['status' => $validated['status']]);
 
         return back()->with('success', 'Order status updated!');
+    }
+
+    public function updateRefundStatus(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'refund_status' => 'required|in:pending,approved,rejected'
+        ]);
+
+        $order->update(['refund_status' => $validated['refund_status']]);
+
+        return back()->with('success', 'Refund status updated!');
     }
 
     public function receipt(Order $order)

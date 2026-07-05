@@ -43,6 +43,16 @@
                         </td>
                         <td class="px-6 py-4">
                             <p class="text-gray-600">{{ Str::limit($review->comment, 50) }}</p>
+                            @if($review->images && count($review->images) > 0)
+                            <div class="flex gap-1 mt-2">
+                                @foreach(array_slice($review->images, 0, 3) as $image)
+                                <img src="{{ asset('storage/' . $image) }}" alt="Review image" class="w-10 h-10 object-cover rounded border border-gray-200">
+                                @endforeach
+                                @if(count($review->images) > 3)
+                                <span class="text-xs text-gray-500 self-center">+{{ count($review->images) - 3 }}</span>
+                                @endif
+                            </div>
+                            @endif
                         </td>
                         <td class="px-6 py-4">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $review->approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">

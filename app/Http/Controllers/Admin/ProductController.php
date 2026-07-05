@@ -32,11 +32,16 @@ class ProductController extends Controller
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']) . '-' . rand(1000, 9999);
         $validated['sku'] = strtoupper(Str::random(6));
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('product-images', 'public');
+            $validated['image'] = asset('storage/' . $path);
+        }
 
         Inventory::create($validated);
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
@@ -57,11 +62,18 @@ class ProductController extends Controller
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validated['name'] !== $product->name) {
             $validated['slug'] = Str::slug($validated['name']) . '-' . rand(1000, 9999);
+        }
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('product-images', 'public');
+            $validated['image'] = asset('storage/' . $path);
+        } else {
+            unset($validated['image']);
         }
 
         $product->update($validated);
@@ -72,5 +84,19 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
+    }
+
+    public function updateImage(Request $request, Inventory $product)
+    {
+        $validated = $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('product-images', 'public');
+            $product->update(['image' => asset('storage/' . $path)]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

@@ -38,7 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-orders', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
     Route::get('/my-orders/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
     Route::get('/my-orders/{order}/receipt', [\App\Http\Controllers\OrderController::class, 'receipt'])->name('orders.receipt');
-    Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('/orders/{order}/refund', [\App\Http\Controllers\OrderController::class, 'requestRefund'])->name('orders.refund');
 });
 
 // Admin Routes
@@ -48,8 +49,10 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::resource('categories', CategoryController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('products', ProductController::class);
+    Route::post('/products/{product}/update-image', [ProductController::class, 'updateImage'])->name('products.updateImage');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
+    Route::post('/orders/{order}/refund-status', [OrderController::class, 'updateRefundStatus'])->name('orders.refund-status');
     Route::get('/orders/{order}/receipt', [OrderController::class, 'receipt'])->name('orders.receipt');
     
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

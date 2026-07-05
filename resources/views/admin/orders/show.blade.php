@@ -19,8 +19,10 @@
                     <select name="status" class="px-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Processing</option>
+                        <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Shipped</option>
                         <option value="delivered" {{ $order->status === 'delivered' ? 'selected' : '' }}>Delivered</option>
                         <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        <option value="sales_return" {{ $order->status === 'sales_return' ? 'selected' : '' }}>Sales Return</option>
                     </select>
                     <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors">
                         Update Status
@@ -145,5 +147,44 @@
             </div>
         </div>
     </div>
+
+    @if($order->refund_requested)
+    <!-- Refund Request Section -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 border-b border-gray-100 bg-gray-50/50">
+            <h3 class="text-lg font-semibold text-gray-800">Refund Request</h3>
+        </div>
+        
+        <div class="p-6">
+            <div class="mb-4 p-4 rounded-xl {{ $order->refund_status === 'approved' ? 'bg-green-50 border border-green-200' : ($order->refund_status === 'rejected' ? 'bg-red-50 border border-red-200' : 'bg-yellow-50 border border-yellow-200') }}">
+                <div class="flex items-center gap-2 font-medium {{ $order->refund_status === 'approved' ? 'text-green-800' : ($order->refund_status === 'rejected' ? 'text-red-800' : 'text-yellow-800') }}">
+                    @if($order->refund_status === 'approved')
+                        <i class="fa-solid fa-check-circle"></i> Refund Approved
+                    @elseif($order->refund_status === 'rejected')
+                        <i class="fa-solid fa-times-circle"></i> Refund Rejected
+                    @else
+                        <i class="fa-solid fa-clock"></i> Refund Pending
+                    @endif
+                </div>
+                <p class="text-sm text-gray-600 mt-1">{{ $order->refund_reason }}</p>
+                <p class="text-xs text-gray-500 mt-2">Requested: {{ $order->refund_requested_at->format('F j, Y, g:i a') }}</p>
+            </div>
+            
+            @if($order->refund_status === 'pending')
+            <form action="{{ route('admin.orders.refund-status', $order) }}" method="POST" class="flex items-center gap-2">
+                @csrf
+                <select name="refund_status" class="px-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="pending" {{ $order->refund_status === 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="approved" {{ $order->refund_status === 'approved' ? 'selected' : '' }}>Approve</option>
+                    <option value="rejected" {{ $order->refund_status === 'rejected' ? 'selected' : '' }}>Reject</option>
+                </select>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors">
+                    Update Refund Status
+                </button>
+            </form>
+            @endif
+        </div>
+    </div>
+    @endif
 </div>
 @endsection

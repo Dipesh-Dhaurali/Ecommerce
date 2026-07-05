@@ -12,9 +12,15 @@ class Review extends Model
     protected $fillable = [
         'user_id',
         'inventory_id',
+        'order_id',
         'rating',
         'comment',
+        'images',
         'approved',
+    ];
+
+    protected $casts = [
+        'images' => 'array',
     ];
 
     public function user()
@@ -25,5 +31,10 @@ class Review extends Model
     public function inventory()
     {
         return $this->belongsTo(Inventory::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

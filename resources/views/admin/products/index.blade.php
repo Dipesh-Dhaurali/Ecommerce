@@ -27,7 +27,7 @@
                 @forelse($products as $product)
                 <tr class="hover:bg-gray-50/50 transition-colors">
                     <td class="px-6 py-4 flex items-center gap-4">
-                        <img src="{{ $product->image ?? 'https://via.placeholder.com/40' }}" alt="{{ $product->name }}" class="w-12 h-12 rounded-lg object-cover border border-gray-200">
+                        <img onclick="openImageModal({{ $product->id }})" src="{{ $product->image ?? 'https://via.placeholder.com/40' }}" alt="{{ $product->name }}" class="w-12 h-12 rounded-lg object-cover border border-gray-200 cursor-pointer hover:border-indigo-500 transition-colors">
                         <div>
                             <p class="font-medium text-gray-800">{{ $product->name }}</p>
                         </div>
@@ -84,4 +84,64 @@
     </div>
     @endif
 </div>
+
+<!-- Image Update Modals -->
+@foreach($products as $product)
+<div id="imageModal-{{ $product->id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 hidden">
+    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Update Product Image</h3>
+        <p class="text-sm text-gray-600 mb-4">Product: {{ $product->name }}</p>
+        <form id="imageForm-{{ $product->id }}">
+            @csrf
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Image</label>
+                <input type="file" id="imageInput-{{ $product->id }}" name="image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div class="flex gap-4">
+                <button type="button" onclick="closeImageModal({{ $product->id }})" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+                <button type="submit" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">Update Image</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endforeach
+
+<script>
+function openImageModal(productId) {
+    document.getElementById('imageModal-' + productId).classList.remove('hidden');
+}
+
+function closeImageModal(productId) {
+    document.getElementById('imageModal-' + productId).classList.add('hidden');
+}
+
+@foreach($products as $product)
+document.getElementById('imageForm-{{ $product->id }}').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    const fileInput = document.getElementById('imageInput-{{ $product->id }}');
+    
+    if (fileInput.files.length > 0) {
+        formData.append('image', fileInput.files[0]);
+    }
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+    
+    fetch('{{ route('admin.products.updateImage', $product) }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            location.reload();
+        } else {
+            alert('Error updating image');
+        }
+    })
+    .catch(error => {
+        alert('Error updating image');
+    });
+});
+@endforeach
+</script>
 @endsection

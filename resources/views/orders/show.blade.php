@@ -18,7 +18,7 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-white/20 text-white">
-                        {{ ucfirst($order->status) }}
+                        {{ $order->status === 'delivered' ? 'Completed' : ucfirst($order->status) }}
                     </span>
                     <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-white/20 text-white">
                         {{ ucfirst($order->payment_status) }}
@@ -100,13 +100,85 @@
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Items</h3>
                 <div class="divide-y divide-gray-100">
                     @foreach($order->items as $item)
-                        <div class="py-4 flex items-center gap-4">
-                            <img src="{{ $item->inventory->image ?? 'https://via.placeholder.com/100' }}" alt="{{ $item->inventory->name }}" class="w-20 h-20 rounded-lg border border-gray-200 object-cover">
-                            <div class="flex-1">
-                                <h4 class="font-medium text-gray-900">{{ $item->inventory->name }}</h4>
-                                <p class="text-sm text-gray-500">Qty: {{ $item->quantity }} × Rs. {{ number_format($item->price, 2) }}</p>
+                        <div class="py-4">
+                            <div class="flex items-center gap-4">
+                                <img src="{{ $item->inventory->image ?? 'https://via.placeholder.com/100' }}" alt="{{ $item->inventory->name }}" class="w-20 h-20 rounded-lg border border-gray-200 object-cover">
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-900">{{ $item->inventory->name }}</h4>
+                                    <p class="text-sm text-gray-500">Qty: {{ $item->quantity }} × Rs. {{ number_format($item->price, 2) }}</p>
+                                </div>
+                                <p class="font-medium text-gray-900">Rs. {{ number_format($item->total, 2) }}</p>
                             </div>
-                            <p class="font-medium text-gray-900">Rs. {{ number_format($item->total, 2) }}</p>
+                            
+                            @if($order->status === 'delivered')
+                                @php
+                                    $existingReview = \App\Models\Review::where('user_id', auth()->id())
+                                        ->where('inventory_id', $item->inventory_id)
+                                        ->where('order_id', $order->id)
+                                        ->first();
+                                @endphp
+                                
+                                @if(!$existingReview)
+                                    <!-- Review Form -->
+                                    <div class="mt-4 pl-24">
+                                        <div x-data="{ reviewOpen: false, selectedRating: 0 }" class="border border-gray-200 rounded-xl p-4 bg-gray-50">
+                                            <button @click="reviewOpen = !reviewOpen" class="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium">
+                                                <i class="fa-solid fa-star"></i> Write a Review
+                                            </button>
+                                            
+                                            <div x-show="reviewOpen" x-transition class="mt-4">
+                                                <form action="{{ route('reviews.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                                                    @csrf
+                                                    <input type="hidden" name="inventory_id" value="{{ $item->inventory_id }}">
+                                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                    
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                                                        <div class="flex gap-2">
+                                                            @for($i = 1; $i <= 5; $i++)
+                                                                <label class="cursor-pointer">
+                                                                    <input type="radio" name="rating" value="{{ $i }}" class="sr-only" required x-model="selectedRating">
+                                                                    <i class="fa-solid fa-star text-2xl transition-colors" 
+                                                                       :class="selectedRating >= {{ $i }} ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-400'"></i>
+                                                                </label>
+                                                            @endfor
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+                                                        <textarea name="comment" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Share your experience..."></textarea>
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload Images (Optional)</label>
+                                                        <input type="file" name="images[]" multiple accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                                    </div>
+                                                    
+                                                    <button type="submit" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">
+                                                        Submit Review
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <!-- Existing Review -->
+                                    <div class="mt-4 pl-24">
+                                        <div class="border border-gray-200 rounded-xl p-4 bg-green-50">
+                                            <div class="flex items-center gap-2 text-green-700 font-medium mb-2">
+                                                <i class="fa-solid fa-check-circle"></i> Review Submitted
+                                            </div>
+                                            <div class="flex items-center gap-1 mb-2">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="fa-solid fa-star {{ $i <= $existingReview->rating ? 'text-yellow-400' : 'text-gray-300' }}"></i>
+                                                @endfor
+                                            </div>
+                                            <p class="text-gray-600 text-sm">{{ $existingReview->comment }}</p>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -129,7 +201,51 @@
                 <a href="{{ route('orders.receipt', $order) }}" target="_blank" class="flex-1 flex items-center justify-center px-6 py-3 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors font-medium">
                     <i class="fa-solid fa-print mr-2"></i> Print Receipt
                 </a>
+                @if($order->status === 'delivered' && !$order->refund_requested)
+                    @php
+                        $daysSinceDelivery = $order->updated_at->diffInDays(now());
+                        $canRefund = $daysSinceDelivery <= 7;
+                    @endphp
+                    @if($canRefund)
+                        <button x-data="{ refundOpen: false }" class="flex-1 flex items-center justify-center px-6 py-3 bg-red-600 text-white hover:bg-red-700 rounded-xl transition-colors font-medium">
+                            <i class="fa-solid fa-rotate-left mr-2"></i> Request Refund
+                        </button>
+                        <div x-show="refundOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                            <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+                                <h3 class="text-xl font-bold text-gray-900 mb-4">Request Refund</h3>
+                                <p class="text-gray-600 mb-4">If defected/size issue related than you can refund within 7 days fully money will be refunded.</p>
+                                <form action="{{ route('orders.refund', $order) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Reason for Refund</label>
+                                        <textarea name="refund_reason" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required placeholder="Please describe the issue..."></textarea>
+                                    </div>
+                                    <div class="flex gap-4">
+                                        <button type="button" @click="refundOpen = false" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+                                        <button type="submit" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">Submit Request</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
+                @endif
             </div>
+            
+            @if($order->refund_requested)
+                <div class="mt-6 p-4 rounded-xl {{ $order->refund_status === 'approved' ? 'bg-green-50 border border-green-200' : ($order->refund_status === 'rejected' ? 'bg-red-50 border border-red-200' : 'bg-yellow-50 border border-yellow-200') }}">
+                    <div class="flex items-center gap-2 font-medium {{ $order->refund_status === 'approved' ? 'text-green-800' : ($order->refund_status === 'rejected' ? 'text-red-800' : 'text-yellow-800') }}">
+                        @if($order->refund_status === 'approved')
+                            <i class="fa-solid fa-check-circle"></i> Refund Approved
+                        @elseif($order->refund_status === 'rejected')
+                            <i class="fa-solid fa-times-circle"></i> Refund Rejected
+                        @else
+                            <i class="fa-solid fa-clock"></i> Refund Requested
+                        @endif
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">{{ $order->refund_reason }}</p>
+                    <p class="text-xs text-gray-500 mt-2">Requested: {{ $order->refund_requested_at->format('F j, Y, g:i a') }}</p>
+                </div>
+            @endif
         </div>
     </div>
 </div>

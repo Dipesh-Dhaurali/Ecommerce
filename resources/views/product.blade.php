@@ -48,6 +48,24 @@
         </div>
     </div>
 
+    <!-- Related Products -->
+    @if($relatedProducts->count() > 0)
+    <div class="mt-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Products</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($relatedProducts as $relatedProduct)
+            <a href="{{ route('product.show', $relatedProduct) }}" class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <img src="{{ $relatedProduct->image }}" alt="{{ $relatedProduct->name }}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-medium text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
+                    <p class="text-indigo-600 font-bold">Rs. {{ number_format($relatedProduct->price, 2) }}</p>
+                </div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <!-- Reviews Section -->
     <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
         <div class="p-6 border-b border-gray-100">
@@ -57,28 +75,17 @@
         <div class="p-6">
             @auth
             <div class="mb-8 p-6 bg-gray-50 rounded-xl">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Write a Review</h3>
-                <form action="{{ route('reviews.store', $product) }}" method="POST">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
-                        <div class="flex items-center gap-2">
-                            @for($i = 1; $i <= 5; $i++)
-                            <label class="cursor-pointer">
-                                <input type="radio" name="rating" value="{{ $i }}" class="sr-only" required>
-                                <i class="fa-solid fa-star text-2xl text-gray-300 hover:text-yellow-500 transition-colors rating-star" data-rating="{{ $i }}"></i>
-                            </label>
-                            @endfor
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Comment (optional)</label>
-                        <textarea name="comment" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
-                    </div>
-                    <button type="submit" class="px-6 py-2 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors">
-                        Submit Review
-                    </button>
-                </form>
+                <div class="flex items-center gap-3 text-gray-600">
+                    <i class="fa-solid fa-info-circle text-indigo-600"></i>
+                    <p>You can only review products after purchasing them. Please check your order history to submit reviews.</p>
+                </div>
+            </div>
+            @else
+            <div class="mb-8 p-6 bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-3 text-gray-600">
+                    <i class="fa-solid fa-info-circle text-indigo-600"></i>
+                    <p>Please <a href="{{ route('login') }}" class="text-indigo-600 hover:text-indigo-700 font-medium">login</a> to view and submit reviews.</p>
+                </div>
             </div>
             @endauth
 
@@ -101,7 +108,14 @@
                         </div>
                     </div>
                     @if($review->comment)
-                    <p class="text-gray-600">{{ $review->comment }}</p>
+                    <p class="text-gray-600 mb-4">{{ $review->comment }}</p>
+                    @endif
+                    @if($review->images && count($review->images) > 0)
+                    <div class="flex gap-2 flex-wrap">
+                        @foreach($review->images as $image)
+                        <img src="{{ asset('storage/' . $image) }}" alt="Review image" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
+                        @endforeach
+                    </div>
                     @endif
                 </div>
                 @endforeach

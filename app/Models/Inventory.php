@@ -20,7 +20,7 @@ class Inventory extends Model
 
     public function reviews()
     {
-        return $this->hasMany(Review::class)->where('approved', true);
+        return $this->hasMany(Review::class);
     }
 
     public function getAverageRatingAttribute()

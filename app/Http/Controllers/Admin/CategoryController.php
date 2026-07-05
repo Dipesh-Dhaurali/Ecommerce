@@ -26,10 +26,15 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']) . '-' . rand(1000, 9999);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('category-images', 'public');
+            $validated['image'] = asset('storage/' . $path);
+        }
 
         Category::create($validated);
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully!');
@@ -46,11 +51,18 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id|different:id',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validated['name'] !== $category->name) {
             $validated['slug'] = Str::slug($validated['name']) . '-' . rand(1000, 9999);
+        }
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('category-images', 'public');
+            $validated['image'] = asset('storage/' . $path);
+        } else {
+            unset($validated['image']);
         }
 
         $category->update($validated);

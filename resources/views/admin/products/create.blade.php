@@ -49,8 +49,8 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Image URL (Optional)</label>
-                    <input type="url" name="image" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="https://example.com/image.jpg">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
+                    <input type="file" name="image" accept="image/*" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
                 </div>
             </div>
 
