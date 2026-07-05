@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -57,3 +58,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+=======
+# Ecommerce
+A full-stack e-commerce web application built with Django (Python) that allows users to browse products, add items to cart, and place orders.  This project demonstrates Django concepts including models, CRUD operations, authentication, cart system, and database integration.
+>>>>>>> 605584b90ea03f8e79187325e91e0659c4174c07
