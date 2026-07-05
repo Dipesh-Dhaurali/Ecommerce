@@ -75,10 +75,16 @@
 
                 <!-- Right Side Actions -->
                 <div class="flex items-center space-x-4">
+                    @auth
                     <button @click="cartOpen = true" class="relative text-gray-500 hover:text-indigo-600 transition-colors p-2">
                         <i class="fa-solid fa-cart-shopping text-xl"></i>
                         <span x-show="cart.length > 0" class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-pink-500 rounded-full" x-text="cartTotalItems"></span>
                     </button>
+                    @else
+                    <a href="{{ route('login') }}" class="relative text-gray-500 hover:text-indigo-600 transition-colors p-2">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    </a>
+                    @endauth
                     
                     @auth
                         <div class="relative" x-data="{ userMenu: false }">
@@ -207,6 +213,12 @@
         </div>
     </div>
 
+    <!-- Notification Toast -->
+    <div x-show="notification" x-transition:enter="transform ease-out duration-300 transition" x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2" x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed bottom-4 right-4 z-50 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-2" x-cloak>
+        <i class="fa-solid fa-circle-check"></i>
+        <span x-text="notification"></span>
+    </div>
+
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('storefront', () => ({
@@ -215,6 +227,8 @@
                 searchOpen: false,
                 searchQuery: '',
                 searchResults: [],
+                notification: null,
+                notificationTimeout: null,
                 
                 init() {
                     this.$watch('cart', val => localStorage.setItem('cart', JSON.stringify(val)))
@@ -236,13 +250,27 @@
                 },
 
                 addToCart(product) {
+                    @auth
                     const index = this.cart.findIndex(item => item.id === product.id);
                     if (index > -1) {
                         this.cart[index].quantity++;
                     } else {
                         this.cart.push({ ...product, quantity: 1 });
                     }
-                    this.cartOpen = true;
+                    this.showNotification('Item added to basket');
+                    @else
+                    window.location.href = '{{ route('login') }}';
+                    @endauth
+                },
+
+                showNotification(message) {
+                    this.notification = message;
+                    if (this.notificationTimeout) {
+                        clearTimeout(this.notificationTimeout);
+                    }
+                    this.notificationTimeout = setTimeout(() => {
+                        this.notification = null;
+                    }, 2000);
                 },
 
                 updateQuantity(index, change) {
