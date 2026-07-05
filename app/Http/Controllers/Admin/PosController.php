@@ -23,7 +23,14 @@ class PosController extends Controller
         $products = Inventory::where('name', 'like', "%{$query}%")
             ->orWhere('sku', 'like', "%{$query}%")
             ->limit(20)
-            ->get();
+            ->get()
+            ->map(function($product) {
+                // Handle both external URLs and local storage paths
+                if ($product->image && !str_starts_with($product->image, 'http')) {
+                    $product->image = asset('storage/' . $product->image);
+                }
+                return $product;
+            });
             
         return response()->json($products);
     }
