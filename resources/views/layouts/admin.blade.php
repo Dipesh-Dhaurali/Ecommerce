@@ -73,7 +73,7 @@
                 </a>
 
                 <a href="{{ route('admin.pos.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.pos.*') ? 'bg-gradient-to-r from-indigo-50 to-pink-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <i class="fa-solid fa-cash-register w-5"></i> POS Counter
+                    <i class="fa-solid fa-cash-register w-5"></i> Sales Counter
                 </a>
 
                 <a href="{{ route('admin.reports.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.reports.*') ? 'bg-gradient-to-r from-indigo-50 to-pink-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
