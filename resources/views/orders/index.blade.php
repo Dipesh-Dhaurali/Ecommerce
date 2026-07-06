@@ -38,7 +38,7 @@
                         <div class="space-y-4">
                             @foreach($order->items as $item)
                                 <div class="flex items-center gap-4">
-                                    <img src="{{ $item->inventory->image ?? 'https://via.placeholder.com/100' }}" alt="{{ $item->inventory->name }}" class="w-16 h-16 rounded-lg border border-gray-200 object-cover">
+                                    <img src="{{ $item->inventory->image ? asset('storage/' . $item->inventory->image) : 'https://via.placeholder.com/100' }}" alt="{{ $item->inventory->name }}" class="w-16 h-16 rounded-lg border border-gray-200 object-cover">
                                     <div class="flex-1">
                                         <h4 class="font-medium text-gray-900">{{ $item->inventory->name }}</h4>
                                         <p class="text-sm text-gray-500">Qty: {{ $item->quantity }}</p>

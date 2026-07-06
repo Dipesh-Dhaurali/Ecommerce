@@ -27,7 +27,7 @@
                     <tr class="hover:bg-gray-50/50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="{{ $review->inventory->image ?? 'https://via.placeholder.com/40' }}" alt="{{ $review->inventory->name }}" class="w-10 h-10 rounded-lg object-cover border border-gray-100">
+                                <img src="{{ $review->inventory->image ? asset('storage/' . $review->inventory->image) : 'https://via.placeholder.com/40' }}" alt="{{ $review->inventory->name }}" class="w-10 h-10 rounded-lg object-cover border border-gray-100">
                                 <p class="font-medium text-gray-900">{{ $review->inventory->name }}</p>
                             </div>
                         </td>
