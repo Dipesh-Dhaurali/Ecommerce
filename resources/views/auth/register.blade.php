@@ -31,11 +31,21 @@
                 </div>
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" name="password" type="password" required class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                    <div class="mt-1 relative">
+                        <input id="password" name="password" type="password" required class="block w-full px-3 py-2 pr-10 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                        <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                            <i class="fa-solid fa-eye" id="password-eye"></i>
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input id="password_confirmation" name="password_confirmation" type="password" required class="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                    <div class="mt-1 relative">
+                        <input id="password_confirmation" name="password_confirmation" type="password" required class="block w-full px-3 py-2 pr-10 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                        <button type="button" onclick="togglePassword('password_confirmation')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                            <i class="fa-solid fa-eye" id="password_confirmation-eye"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -51,4 +61,20 @@
         </div>
     </div>
 </div>
+
+<script>
+function togglePassword(fieldId) {
+    const input = document.getElementById(fieldId);
+    const eye = document.getElementById(fieldId + '-eye');
+    if (input.type === 'password') {
+        input.type = 'text';
+        eye.classList.remove('fa-eye');
+        eye.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        eye.classList.remove('fa-eye-slash');
+        eye.classList.add('fa-eye');
+    }
+}
+</script>
 @endsection

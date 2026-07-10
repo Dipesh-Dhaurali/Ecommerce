@@ -48,7 +48,12 @@
                 </div>
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input id="password" name="password" type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all">
+                    <div class="relative">
+                        <input id="password" name="password" type="password" required class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all">
+                        <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                            <i class="fa-solid fa-eye" id="password-eye"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -74,5 +79,21 @@
             </a>
         </div>
     </div>
+
+<script>
+function togglePassword(fieldId) {
+    const input = document.getElementById(fieldId);
+    const eye = document.getElementById(fieldId + '-eye');
+    if (input.type === 'password') {
+        input.type = 'text';
+        eye.classList.remove('fa-eye');
+        eye.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        eye.classList.remove('fa-eye-slash');
+        eye.classList.add('fa-eye');
+    }
+}
+</script>
 </body>
 </html>
