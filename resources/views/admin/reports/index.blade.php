@@ -43,6 +43,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-6 border-b border-gray-100 bg-gray-50/50">
             <form action="{{ route('admin.reports.index') }}" method="GET" class="flex flex-col sm:flex-row gap-4 items-end">
+                @csrf
                 <div class="flex-1 w-full">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                     <input type="date" name="start_date" value="{{ request('start_date') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm">

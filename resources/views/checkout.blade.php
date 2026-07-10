@@ -160,15 +160,34 @@
             prepareSubmit(e) {
                 if(this.cart.length === 0) {
                     e.preventDefault();
-                    alert('Your cart is empty!');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Cart Empty',
+                        text: 'Your cart is empty!',
+                        confirmButtonColor: '#10b981'
+                    });
                     return false;
                 }
                 
-                // Clear cart after submitting
-                setTimeout(() => {
-                    localStorage.setItem('cart', '[]');
-                    this.cart = [];
-                }, 100);
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to confirm this order?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#10b981',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, confirm order!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Clear cart after submitting
+                        localStorage.setItem('cart', '[]');
+                        this.cart = [];
+                        // Submit the form
+                        e.target.submit();
+                    }
+                });
             }
         }));
     });
