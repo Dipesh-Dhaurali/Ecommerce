@@ -66,6 +66,9 @@ class HomeController extends Controller
         $items = json_decode($validated['items'], true);
         
         if (empty($items)) {
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Your cart is empty.'], 400);
+            }
             return back()->with('error', 'Your cart is empty.');
         }
 
@@ -124,10 +127,19 @@ class HomeController extends Controller
 
             DB::commit();
 
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Order placed successfully!', 'order_id' => $order->id]);
+            }
+
             return redirect()->route('home')->with('success', 'Order placed successfully! Your order number is #' . $order->id);
 
         } catch (\Exception $e) {
             DB::rollBack();
+            
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Error placing order: ' . $e->getMessage()], 500);
+            }
+            
             return back()->with('error', 'Error placing order: ' . $e->getMessage());
         }
     }

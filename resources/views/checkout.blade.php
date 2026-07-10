@@ -136,6 +136,12 @@
     </div>
 </div>
 
+<style>
+    .swal-wide {
+        width: 500px !important;
+    }
+</style>
+
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('checkoutPage', () => ({
@@ -178,14 +184,76 @@
                     showCancelButton: true,
                     confirmButtonColor: '#10b981',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, confirm order!'
+                    confirmButtonText: 'Yes, confirm order!',
+                    width: '500px',
+                    padding: '2rem',
+                    customClass: {
+                        popup: 'swal-wide'
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Clear cart after submitting
-                        localStorage.setItem('cart', '[]');
-                        this.cart = [];
-                        // Submit the form
-                        e.target.submit();
+                        // Show loading state
+                        Swal.fire({
+                            title: 'Processing Order',
+                            text: 'Please wait while we process your order...',
+                            icon: 'info',
+                            confirmButtonColor: '#10b981',
+                            width: '500px',
+                            padding: '2rem',
+                            customClass: {
+                                popup: 'swal-wide'
+                            },
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false
+                        });
+                        
+                        // Submit form via AJAX
+                        const formData = new FormData(e.target);
+                        formData.append('items', this.itemsJson);
+                        
+                        fetch(e.target.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear cart after successful submission
+                            localStorage.setItem('cart', '[]');
+                            this.cart = [];
+                            
+                            // Show success dialog
+                            Swal.fire({
+                                title: 'Order Confirmed!',
+                                text: 'Your order has been placed successfully. Thank you for shopping with us!',
+                                icon: 'success',
+                                confirmButtonColor: '#10b981',
+                                width: '500px',
+                                padding: '2rem',
+                                customClass: {
+                                    popup: 'swal-wide'
+                                }
+                            }).then(() => {
+                                window.location.href = '{{ route('home') }}';
+                            });
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'There was an error processing your order. Please try again.',
+                                icon: 'error',
+                                confirmButtonColor: '#10b981',
+                                width: '500px',
+                                padding: '2rem',
+                                customClass: {
+                                    popup: 'swal-wide'
+                                }
+                            });
+                        });
                     }
                 });
             }
