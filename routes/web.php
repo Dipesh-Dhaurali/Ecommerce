@@ -37,6 +37,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('/products/{product}', [HomeController::class, 'productShow'])->name('product.show');
 Route::get('/search', [HomeController::class, 'instantSearch'])->name('search.instant');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
 
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
@@ -63,6 +66,8 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('/sms', [\App\Http\Controllers\Admin\SmsController::class, 'index'])->name('sms.index');
+    Route::delete('/sms/{sms}', [\App\Http\Controllers\Admin\SmsController::class, 'destroy'])->name('sms.destroy');
 
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
     Route::get('/pos/search', [PosController::class, 'search'])->name('pos.search');

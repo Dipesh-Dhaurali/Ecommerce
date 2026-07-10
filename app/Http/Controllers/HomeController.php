@@ -174,4 +174,28 @@ class HomeController extends Controller
         
         return view('product', compact('product', 'relatedProducts'));
     }
+
+    public function about()
+    {
+        return view('about');
+    }
+
+    public function contact()
+    {
+        return view('contact');
+    }
+
+    public function contactSubmit(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|max:2000',
+        ]);
+
+        \App\Models\ContactMessage::create($validated);
+
+        return back()->with('success', 'Thank you! Your message has been received. We will get back to you shortly.');
+    }
 }

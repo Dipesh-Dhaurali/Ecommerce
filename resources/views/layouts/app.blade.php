@@ -123,9 +123,78 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 mt-12 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500">
-            <p>&copy; {{ date('Y') }} e-mart. All rights reserved.</p>
+    <footer class="bg-white border-t border-gray-100 mt-16 pt-16 pb-8 text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Column 1: Brand -->
+                <div class="space-y-4">
+                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">e-mart</span>
+                    <p class="text-sm text-gray-400">Your ultimate hub for premium electronics, tech accessories, and delicious snacks delivered straight to your door.</p>
+                    <div class="flex gap-4">
+                        <a href="https://www.facebook.com/dipesh.dhaurali.1/" target="_blank" class="w-8 h-8 rounded-full bg-gray-50 hover:bg-indigo-50 flex items-center justify-center text-gray-400 hover:text-indigo-600 transition-colors">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/dipesh1dip1/?hl=en" target="_blank" class="w-8 h-8 rounded-full bg-gray-50 hover:bg-pink-50 flex items-center justify-center text-gray-400 hover:text-pink-600 transition-colors">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://github.com/Dipesh-Dhaurali" target="_blank" class="w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-900 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="https://wa.me/9779800000000" target="_blank" class="w-8 h-8 rounded-full bg-gray-50 hover:bg-green-50 flex items-center justify-center text-gray-400 hover:text-green-600 transition-colors">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Information -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{{ route('home') }}" class="hover:text-indigo-600 transition-colors">Home</a></li>
+                        <li><a href="{{ route('shop') }}" class="hover:text-indigo-600 transition-colors">Shop</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-indigo-600 transition-colors">About Us</a></li>
+                        <li><a href="{{ route('contact') }}" class="hover:text-indigo-600 transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Contact Info -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-phone text-indigo-500 text-xs"></i> 9800000000
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-envelope text-indigo-500 text-xs"></i> hello@e-mart.test
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-emerald-500 text-xs"></i> +977 9800000000
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Developer Portfolio & Projects -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Developer Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="https://dipeshdhaurali.com.np/?i=1" target="_blank" class="flex items-center gap-2 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-globe text-xs"></i> Portfolio Website
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://dipeshjobportal.pythonanywhere.com/" target="_blank" class="flex items-center gap-2 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-diagram-project text-xs"></i> Other Projects
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 gap-4">
+                <p>&copy; {{ date('Y') }} e-mart. All rights reserved.</p>
+                <p class="flex items-center gap-1">Designed & Developed with <i class="fa-solid fa-heart text-red-500 animate-pulse"></i> by Dipesh Dhaurali</p>
+            </div>
         </div>
     </footer>
 

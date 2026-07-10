@@ -95,6 +95,10 @@
                     <i class="fa-solid fa-gear w-5"></i> Settings
                 </a>
 
+                <a href="{{ route('admin.sms.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.sms.*') ? 'bg-gradient-to-r from-indigo-50 to-pink-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <i class="fa-solid fa-comment-sms w-5"></i> Show SMS
+                </a>
+
             </nav>
 
             <div class="p-4 border-t border-gray-100">
