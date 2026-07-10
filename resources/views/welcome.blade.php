@@ -4,33 +4,64 @@
 
 @section('content')
 <!-- Hero Section -->
-<div class="relative bg-white overflow-hidden">
-    <div class="max-w-7xl mx-auto">
-        <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-            <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                <div class="sm:text-center lg:text-left">
-                    <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                        <span class="block xl:inline">Fresh groceries</span>
-                        <span class="block text-green-600 xl:inline">delivered to you</span>
-                    </h1>
-                    <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                        Shop our huge selection of groceries, electronics, and daily essentials from the comfort of your home.
-                    </p>
-                    <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                        <div class="rounded-md shadow">
-                            <a href="{{ route('shop') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-green-600 hover:bg-green-700 md:py-4 md:text-lg transition-colors">
-                                Shop Now
-                            </a>
-                        </div>
+<div class="relative bg-gradient-to-br from-indigo-50/40 via-white to-emerald-50/20 overflow-hidden border-b border-gray-100">
+    <!-- Decorative background elements -->
+    <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-200/20 blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-emerald-200/10 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-12 items-center">
+            <!-- Left Content Column -->
+            <div class="sm:text-center lg:text-left lg:col-span-6 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 border border-indigo-100/60 rounded-full text-indigo-700 text-xs font-semibold tracking-wide">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                    </span>
+                    ⚡ Fast Delivery & Premium Brands
+                </div>
+                
+                <h1 class="text-4xl tracking-tight font-black text-gray-900 sm:text-5xl md:text-6xl leading-none">
+                    Your favorite <span class="bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 bg-clip-text text-transparent">brands & essentials</span> delivered today
+                </h1>
+                
+                <p class="text-base text-gray-600 sm:text-lg sm:max-w-xl sm:mx-auto md:text-xl lg:mx-0 leading-relaxed">
+                    Explore a handpicked collection of premium smartphones, electronics, high-speed accessories, and gourmet snacks. All from the comfort of your home.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 sm:justify-center lg:justify-start">
+                    <a href="{{ route('shop') }}" class="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-xl shadow-indigo-100 hover:shadow-indigo-200 transition-all transform hover:-translate-y-0.5 text-base md:text-lg">
+                        Shop Collection <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                    <a href="{{ route('shop') }}?brand=1" class="flex items-center justify-center px-8 py-4 bg-white border-2 border-gray-100 hover:border-gray-200 text-gray-700 font-semibold rounded-2xl hover:bg-gray-50 transition-all text-base md:text-lg">
+                        Explore Brands
+                    </a>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="pt-6 border-t border-gray-100 flex flex-wrap gap-x-8 gap-y-4 sm:justify-center lg:justify-start text-xs text-gray-500 font-medium">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-truck text-emerald-500 text-sm"></i> Free Same-Day Shipping
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-indigo-500 text-sm"></i> 100% Genuine Products
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-arrows-rotate text-purple-500 text-sm"></i> Easy Returns & Refunds
                     </div>
                 </div>
-            </main>
-        </div>
-    </div>
-    <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-green-50">
-        <!-- Abstract shape or placeholder image -->
-        <div class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full flex items-center justify-center text-green-200">
-            <i class="fa-solid fa-basket-shopping text-9xl"></i>
+            </div>
+            
+            <!-- Right Image Column -->
+            <div class="mt-12 lg:mt-0 lg:col-span-6 relative">
+                <div class="relative mx-auto w-full max-w-lg lg:max-w-none flex justify-center items-center">
+                    <!-- Glassmorphism backdrop block -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-indigo-100/30 to-emerald-100/30 rounded-3xl transform rotate-3 scale-95 blur-sm pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-white/40 backdrop-blur-md border border-white/60 rounded-3xl shadow-2xl pointer-events-none"></div>
+                    
+                    <img src="{{ asset('images/hero_banner.png') }}" alt="e-mart premium digital market" class="relative z-10 w-full h-auto rounded-3xl object-cover transform hover:scale-[1.02] transition-transform duration-500 p-4">
+                </div>
+            </div>
         </div>
     </div>
 </div>

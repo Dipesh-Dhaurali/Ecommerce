@@ -18,7 +18,7 @@ class HomeController extends Controller
         if($featuredProducts->isEmpty()) {
             $featuredProducts = Inventory::with('category')->limit(8)->get(); // fallback
         }
-        $categories = Category::whereNull('parent_id')->limit(4)->get();
+        $categories = Category::whereNotIn('name', ['Chips', 'Biscuits'])->get();
         
         return view('welcome', compact('featuredProducts', 'categories'));
     }
