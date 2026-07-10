@@ -66,17 +66,20 @@
             
             @if($products->isEmpty())
                 <div class="bg-white border border-gray-100 rounded-2xl p-12 text-center">
-                    <i class="fa-solid fa-box-open text-6xl text-gray-300 mb-4"></i>
+                    <i class="fa-solid fa-box-open text-6xl text-gray-300 mb-4 animate-bounce"></i>
                     <h2 class="text-xl font-semibold text-gray-900 mb-2">No products found</h2>
-                    <p class="text-gray-500">Try adjusting your filters or search terms.</p>
+                    <p class="text-gray-500 mb-6">You currently have both <strong>{{ optional($categories->firstWhere('id', request('category')))->name }}</strong> category and <strong>{{ optional($brands->firstWhere('id', request('brand')))->name }}</strong> brand selected together, which returned no results.</p>
+                    <a href="{{ route('shop') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+                        Clear All Filters
+                    </a>
                 </div>
             @else
             
             <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                 @foreach($products as $product)
                 <a href="{{ route('product.show', $product) }}" class="group relative bg-white border border-gray-100 rounded-2xl p-4 hover:shadow-lg transition-shadow flex flex-col">
-                    <div class="w-full min-h-48 bg-gray-200 aspect-w-1 aspect-h-1 rounded-xl overflow-hidden mb-4">
-                        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-full object-center object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="w-full h-48 bg-gray-50 rounded-xl overflow-hidden mb-4 flex items-center justify-center relative border border-gray-100">
+                        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-full object-center object-contain p-2 group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="flex-1 flex flex-col justify-between">
                         <div>

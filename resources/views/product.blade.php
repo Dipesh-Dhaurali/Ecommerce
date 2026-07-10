@@ -54,9 +54,11 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Products</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($relatedProducts as $relatedProduct)
-            <a href="{{ route('product.show', $relatedProduct) }}" class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <img src="{{ $relatedProduct->image }}" alt="{{ $relatedProduct->name }}" class="w-full h-48 object-cover">
-                <div class="p-4">
+            <a href="{{ route('product.show', $relatedProduct) }}" class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                <div class="w-full h-48 bg-gray-50 flex items-center justify-center border-b border-gray-100 overflow-hidden relative">
+                    <img src="{{ $relatedProduct->image ? asset('storage/' . $relatedProduct->image) : 'https://via.placeholder.com/400' }}" alt="{{ $relatedProduct->name }}" class="w-full h-full object-center object-contain p-2">
+                </div>
+                <div class="p-4 flex-1 flex flex-col justify-between">
                     <h3 class="font-medium text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
                     <p class="text-indigo-600 font-bold">Rs. {{ number_format($relatedProduct->price, 2) }}</p>
                 </div>
