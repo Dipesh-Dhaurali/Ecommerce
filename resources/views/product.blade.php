@@ -44,6 +44,9 @@
                     <i class="fa-solid fa-cart-plus mr-2"></i> Add to Cart
                 </button>
                 @endif
+                <button @click="addToWishlist({{ $product->id }})" class="px-8 py-4 {{ in_array($product->id, $wishlistItems ?? []) ? 'bg-red-50 text-red-600' : 'bg-gray-100 text-gray-700' }} font-semibold rounded-xl hover:bg-red-50 hover:text-red-600 transition-all shadow-lg" data-wishlist-id="{{ $wishlistItems[$product->id] ?? '' }}">
+                    <i class="fa-solid fa-heart mr-2"></i> Wishlist
+                </button>
             </div>
         </div>
     </div>

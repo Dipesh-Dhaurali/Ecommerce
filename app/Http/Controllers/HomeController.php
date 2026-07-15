@@ -20,7 +20,14 @@ class HomeController extends Controller
         }
         $categories = Category::whereNotIn('name', ['Chips', 'Biscuits'])->get();
         
-        return view('welcome', compact('featuredProducts', 'categories'));
+        $wishlistItems = [];
+        if (auth()->check()) {
+            $wishlistItems = \App\Models\Wishlist::where('user_id', auth()->id())
+                ->pluck('id', 'inventory_id')
+                ->toArray();
+        }
+        
+        return view('welcome', compact('featuredProducts', 'categories', 'wishlistItems'));
     }
 
     public function shop(Request $request)
@@ -44,7 +51,14 @@ class HomeController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
 
-        return view('shop', compact('products', 'categories', 'brands'));
+        $wishlistItems = [];
+        if (auth()->check()) {
+            $wishlistItems = \App\Models\Wishlist::where('user_id', auth()->id())
+                ->pluck('id', 'inventory_id')
+                ->toArray();
+        }
+
+        return view('shop', compact('products', 'categories', 'brands', 'wishlistItems'));
     }
 
     public function checkout()
@@ -56,7 +70,7 @@ class HomeController extends Controller
     {
         $validated = $request->validate([
             'customer_name' => 'required|string|max:255',
-            'customer_phone' => 'required|string|max:50',
+            'customer_phone' => 'required|string|digits:10',
             'customer_address' => 'required|string|max:500',
             'payment_method' => 'required|in:cash,mobile',
             'payment_screenshot' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -171,8 +185,15 @@ class HomeController extends Controller
             ->where('id', '!=', $product->id)
             ->limit(4)
             ->get();
+
+        $wishlistItems = [];
+        if (auth()->check()) {
+            $wishlistItems = \App\Models\Wishlist::where('user_id', auth()->id())
+                ->pluck('id', 'inventory_id')
+                ->toArray();
+        }
         
-        return view('product', compact('product', 'relatedProducts'));
+        return view('product', compact('product', 'relatedProducts', 'wishlistItems'));
     }
 
     public function about()

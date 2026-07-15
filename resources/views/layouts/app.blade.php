@@ -101,6 +101,7 @@
                                     <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600">Admin Dashboard</a>
                                 @endif
                                 <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600">My Orders</a>
+                                <a href="{{ route('wishlist.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600">My Wishlist</a>
                                 <div class="border-t border-gray-100 my-1"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -330,6 +331,68 @@
                         this.cart.push({ ...product, quantity: 1 });
                     }
                     this.showNotification('Item added to basket');
+                    @else
+                    window.location.href = '{{ route('login') }}';
+                    @endauth
+                },
+
+                addToWishlist(productId) {
+                    @auth
+                    const button = event.target.closest('button');
+                    const isInWishlist = button.classList.contains('text-red-600');
+
+                    if (isInWishlist) {
+                        // Remove from wishlist
+                        const wishlistId = button.dataset.wishlistId;
+                        if (wishlistId) {
+                            fetch(`{{ route('wishlist.destroy', ':id') }}`.replace(':id', wishlistId), {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'Accept': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    button.classList.remove('bg-red-50', 'text-red-600');
+                                    button.classList.add('bg-gray-50', 'text-gray-600');
+                                    delete button.dataset.wishlistId;
+                                    this.showNotification('Removed from wishlist');
+                                } else {
+                                    this.showNotification(data.message || 'Error removing from wishlist');
+                                }
+                            })
+                            .catch(error => {
+                                this.showNotification('Error removing from wishlist');
+                            });
+                        }
+                    } else {
+                        // Add to wishlist
+                        fetch('{{ route('wishlist.store') }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ inventory_id: productId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                button.classList.remove('bg-gray-50', 'text-gray-600');
+                                button.classList.add('bg-red-50', 'text-red-600');
+                                button.dataset.wishlistId = data.wishlist_id;
+                                this.showNotification('Added to wishlist');
+                            } else {
+                                this.showNotification(data.message || 'Error adding to wishlist');
+                            }
+                        })
+                        .catch(error => {
+                            this.showNotification('Error adding to wishlist');
+                        });
+                    }
                     @else
                     window.location.href = '{{ route('login') }}';
                     @endauth

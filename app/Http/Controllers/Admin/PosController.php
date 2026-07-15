@@ -43,7 +43,7 @@ class PosController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
             'payment_method' => 'required|string|in:cash,online',
             'customer_name' => 'nullable|string',
-            'customer_phone' => 'nullable|string',
+            'customer_phone' => 'nullable|string|digits:10',
         ]);
 
         try {

@@ -20,7 +20,7 @@ class SettingController extends Controller
             'site_name' => 'nullable|string|max:255',
             'logo' => 'nullable|url',
             'address' => 'nullable|string|max:500',
-            'phone' => 'nullable|string|max:50',
+            'phone' => 'nullable|string|digits:10',
             'email' => 'nullable|email|max:255',
             'currency' => 'nullable|string|max:10',
         ]);

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('customer_name')->nullable();
-            $table->string('customer_phone')->nullable();
+            $table->string('customer_phone', 10)->nullable();
             $table->text('customer_address')->nullable();
             $table->string('order_type')->default('online');
             $table->string('status')->default('pending');

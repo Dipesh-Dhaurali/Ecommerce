@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-orders/{order}/receipt', [\App\Http\Controllers\OrderController::class, 'receipt'])->name('orders.receipt');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::post('/orders/{order}/refund', [\App\Http\Controllers\OrderController::class, 'requestRefund'])->name('orders.refund');
+    Route::get('/wishlist', [\App\Http\Controllers\WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist', [\App\Http\Controllers\WishlistController::class, 'store'])->name('wishlist.store');
+    Route::delete('/wishlist/{wishlist}', [\App\Http\Controllers\WishlistController::class, 'destroy'])->name('wishlist.destroy');
 });
 
 // Admin Routes

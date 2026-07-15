@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('site_name')->nullable();
             $table->string('logo')->nullable();
             $table->text('address')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone', 10)->nullable();
             $table->string('email')->nullable();
             $table->string('currency')->default('Rs.');
             $table->timestamps();

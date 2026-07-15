@@ -80,7 +80,8 @@
                     <div class="sm:col-span-2">
                         <label for="customer_phone" class="block text-sm font-medium text-gray-700">Phone number</label>
                         <div class="mt-1">
-                            <input type="text" id="customer_phone" name="customer_phone" required class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            <input type="text" id="customer_phone" name="customer_phone" x-model="customerPhone" pattern="[0-9]{10}" maxlength="10" required class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm" placeholder="Enter 10-digit phone number">
+                            <p x-show="customerPhone && customerPhone.length !== 10" class="mt-1 text-sm text-red-600">Phone number must be exactly 10 digits</p>
                         </div>
                     </div>
 
@@ -148,6 +149,7 @@
             cart: JSON.parse(localStorage.getItem('cart') || '[]'),
             itemsJson: '',
             paymentMethod: 'cash',
+            customerPhone: '',
             
             init() {
                 this.itemsJson = JSON.stringify(this.cart);
@@ -170,6 +172,18 @@
                         icon: 'error',
                         title: 'Cart Empty',
                         text: 'Your cart is empty!',
+                        confirmButtonColor: '#10b981'
+                    });
+                    return false;
+                }
+
+                // Validate phone number
+                if(!this.customerPhone || this.customerPhone.length !== 10 || !/^[0-9]{10}$/.test(this.customerPhone)) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Phone Number',
+                        text: 'Please enter a valid 10-digit phone number!',
                         confirmButtonColor: '#10b981'
                     });
                     return false;
