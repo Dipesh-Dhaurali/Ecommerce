@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
-@section('title', $product->name)
+@section('title', $product->name . ' - E-Mart Nepal | Dipesh Dhaurali')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <article itemscope itemtype="https://schema.org/Product">
     <a href="{{ route('shop') }}" class="inline-flex items-center text-indigo-600 hover:text-indigo-700 mb-6">
         <i class="fa-solid fa-arrow-left mr-2"></i> Back to Shop
     </a>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
-            <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-96 object-cover">
+            <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }} - E-Mart Nepal Product by Dipesh Dhaurali" class="w-full h-96 object-cover">
         </div>
         
         <div>
@@ -148,4 +149,6 @@ document.querySelectorAll('.rating-star').forEach(star => {
     });
 });
 </script>
+    </article>
+</main>
 @endsection

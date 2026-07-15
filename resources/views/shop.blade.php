@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Shop - e-mart')
+@section('title', 'Shop Online - E-Mart Nepal | Best Products by Dipesh Dhaurali')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900">Shop All Products</h1>
@@ -79,7 +79,7 @@
                 @foreach($products as $product)
                 <a href="{{ route('product.show', $product) }}" class="group relative bg-white border border-gray-100 rounded-2xl p-4 hover:shadow-lg transition-shadow flex flex-col">
                     <div class="w-full h-48 bg-gray-50 rounded-xl overflow-hidden mb-4 flex items-center justify-center relative border border-gray-100">
-                        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-full object-center object-contain p-2 group-hover:scale-105 transition-transform duration-300">
+                        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }} - E-Mart Nepal Product" class="w-full h-full object-center object-contain p-2 group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="flex-1 flex flex-col justify-between">
                         <div>
@@ -117,6 +117,6 @@
         </div>
     </div>
 
-</div>
+</main>
 @endsection
 

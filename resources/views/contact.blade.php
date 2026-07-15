@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us - e-mart')
+@section('title', 'Contact E-Mart Nepal - Get in Touch | Dipesh Dhaurali')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

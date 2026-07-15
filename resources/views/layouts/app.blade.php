@@ -5,13 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Welcome') - e-mart</title>
+    <!-- Primary SEO Meta Tags -->
+    <title>@yield('title', 'E-Mart Nepal - Online Shopping Store by Dipesh Dhaurali') | E-Mart</title>
+    <meta name="description" content="E-Mart Nepal - Your trusted online shopping destination. Shop electronics, groceries, and more. Created by Dipesh Dhaurali. Best prices and fast delivery across Nepal.">
+    <meta name="keywords" content="e-mart, e-mart nepal, emart, e-mart dipesh, emart dipesh dhaurali, emart dipesh, emart dipesh nepal, online shopping nepal, e-commerce nepal, dipesh dhaurali">
+    <meta name="author" content="Dipesh Dhaurali">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="@yield('og:title', 'E-Mart Nepal - Online Shopping Store')">
+    <meta property="og:description" content="E-Mart Nepal - Your trusted online shopping destination by Dipesh Dhaurali. Shop electronics, groceries, and more with best prices.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('images/og-image.jpg') }}">
+    <meta property="og:site_name" content="E-Mart Nepal">
+    <meta property="og:locale" content="en_NP">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('twitter:title', 'E-Mart Nepal - Online Shopping Store')">
+    <meta name="twitter:description" content="E-Mart Nepal - Your trusted online shopping destination by Dipesh Dhaurali. Shop electronics, groceries, and more.">
+    <meta name="twitter:image" content="{{ asset('images/twitter-card.jpg') }}">
+    <meta name="twitter:creator" content="@dipeshdhaurali">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -24,6 +46,39 @@
         body { font-family: 'Inter', sans-serif; }
         [x-cloak] { display: none !important; }
     </style>
+
+    <!-- JSON-LD Structured Data for E-Commerce -->
+    <script type="application/ld+json">
+    @verbatim
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "E-Mart Nepal",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('images/logo.png') }}",
+        "description": "E-Mart Nepal - Your trusted online shopping destination by Dipesh Dhaurali. Shop electronics, groceries, and more.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "NP",
+            "addressRegion": "Nepal"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+977-9800000000",
+            "contactType": "customer service"
+        },
+        "sameAs": [
+            "https://github.com/Dipesh-Dhaurali",
+            "https://dipeshdhaurali.com.np"
+        ],
+        "founder": {
+            "@type": "Person",
+            "name": "Dipesh Dhaurali",
+            "url": "https://dipeshdhaurali.com.np"
+        }
+    }
+    @endverbatim
+    </script>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased flex flex-col min-h-screen" x-data="storefront()">
 

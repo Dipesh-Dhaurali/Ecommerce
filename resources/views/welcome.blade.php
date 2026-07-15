@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Welcome to e-mart')
+@section('title', 'E-Mart Nepal - Online Shopping Store | Dipesh Dhaurali')
 
 @section('content')
+<main>
 <!-- Hero Section -->
-<div class="relative bg-gradient-to-br from-indigo-50/40 via-white to-emerald-50/20 overflow-hidden border-b border-gray-100">
+<header class="relative bg-gradient-to-br from-indigo-50/40 via-white to-emerald-50/20 overflow-hidden border-b border-gray-100">
     <!-- Decorative background elements -->
     <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-200/20 blur-3xl pointer-events-none"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-emerald-200/10 blur-3xl pointer-events-none"></div>
@@ -59,7 +60,7 @@
                     <div class="absolute inset-0 bg-gradient-to-tr from-indigo-100/30 to-emerald-100/30 rounded-3xl transform rotate-3 scale-95 blur-sm pointer-events-none"></div>
                     <div class="absolute inset-0 bg-white/40 backdrop-blur-md border border-white/60 rounded-3xl shadow-2xl pointer-events-none"></div>
                     
-                    <img src="{{ asset('images/hero_banner.png') }}" alt="e-mart premium digital market" class="relative z-10 w-full h-auto rounded-3xl object-cover transform hover:scale-[1.02] transition-transform duration-500 p-4">
+                    <img src="{{ asset('images/hero_banner.png') }}" alt="E-Mart Nepal - Premium Online Shopping Store by Dipesh Dhaurali" class="relative z-10 w-full h-auto rounded-3xl object-cover transform hover:scale-[1.02] transition-transform duration-500 p-4">
                 </div>
             </div>
         </div>
@@ -67,9 +68,9 @@
 </div>
 
 <!-- Categories Section -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" aria-labelledby="categories-heading">
     <div class="sm:flex sm:items-baseline sm:justify-between mb-8">
-        <h2 class="text-2xl font-extrabold tracking-tight text-gray-900">Shop by Category</h2>
+        <h2 id="categories-heading" class="text-2xl font-extrabold tracking-tight text-gray-900">Shop by Category</h2>
         <a href="{{ route('shop') }}" class="hidden sm:block text-sm font-semibold text-green-600 hover:text-green-500">Browse all categories &rarr;</a>
     </div>
 
@@ -78,7 +79,7 @@
         <a href="{{ route('shop', ['category' => $category->id]) }}" class="group relative">
             <div class="w-full h-48 rounded-2xl bg-gray-100 overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-3 sm:h-auto flex items-center justify-center text-4xl text-gray-300 transition-opacity">
                 @if($category->image)
-                    <img src="{{ $category->image }}" class="w-full h-full object-center object-cover">
+                    <img src="{{ $category->image }}" alt="{{ $category->name }} - E-Mart Nepal Category" class="w-full h-full object-center object-cover">
                 @else
                     <i class="fa-solid fa-tags"></i>
                 @endif
@@ -92,10 +93,10 @@
 </div>
 
 <!-- Featured Products -->
-<div class="bg-gray-50 border-t border-gray-100 py-12">
+<section class="bg-gray-50 border-t border-gray-100 py-12" aria-labelledby="products-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="md:flex md:items-center md:justify-between mb-8">
-            <h2 class="text-2xl font-extrabold tracking-tight text-gray-900">Trending Products</h2>
+            <h2 id="products-heading" class="text-2xl font-extrabold tracking-tight text-gray-900">Trending Products</h2>
             <a href="{{ route('shop') }}" class="hidden text-sm font-medium text-green-600 hover:text-green-500 md:block">Shop the collection <span aria-hidden="true">&rarr;</span></a>
         </div>
 
@@ -103,7 +104,7 @@
             @foreach($featuredProducts as $product)
             <a href="{{ route('product.show', $product) }}" class="group relative bg-white border border-gray-100 rounded-2xl p-4 hover:shadow-lg transition-shadow flex flex-col">
                 <div class="w-full h-48 bg-gray-50 rounded-xl overflow-hidden mb-4 flex items-center justify-center relative border border-gray-100">
-                    <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}" class="w-full h-full object-center object-contain p-2 group-hover:scale-105 transition-transform duration-300">
+                    <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400' }}" alt="{{ $product->name }} - E-Mart Nepal Product" class="w-full h-full object-center object-contain p-2 group-hover:scale-105 transition-transform duration-300">
                 </div>
                 <div class="flex-1 flex flex-col justify-between">
                     <div>
@@ -150,4 +151,5 @@
 </div>
 @endif
 
+</main>
 @endsection

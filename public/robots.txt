@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /checkout
+Disallow: /my-orders
+
+# Sitemap
+Sitemap: http://127.0.0.1:8000/sitemap.xml

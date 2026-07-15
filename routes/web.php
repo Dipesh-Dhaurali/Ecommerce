@@ -31,6 +31,10 @@ Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('adm
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.post')->middleware('guest');
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SitemapController;
+
+// SEO Routes
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Storefront Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
