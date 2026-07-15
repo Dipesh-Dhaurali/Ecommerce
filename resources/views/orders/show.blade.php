@@ -91,6 +91,28 @@
                                 <p class="text-sm text-gray-500">Your order has been delivered</p>
                             </div>
                         </div>
+                        @if($order->status === 'cancelled')
+                        <div class="relative flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-red-500 border-4 border-white shadow flex items-center justify-center z-10">
+                                <i class="fa-solid fa-times text-white text-xs"></i>
+                            </div>
+                            <div class="ml-6">
+                                <p class="font-medium text-red-600">Cancelled</p>
+                                <p class="text-sm text-gray-500">Your order has been cancelled</p>
+                            </div>
+                        </div>
+                        @endif
+                        @if($order->status === 'sales_return')
+                        <div class="relative flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-orange-500 border-4 border-white shadow flex items-center justify-center z-10">
+                                <i class="fa-solid fa-rotate-left text-white text-xs"></i>
+                            </div>
+                            <div class="ml-6">
+                                <p class="font-medium text-orange-600">Sales Return</p>
+                                <p class="text-sm text-gray-500">Your order has been returned for refund</p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -207,10 +229,11 @@
                         $canRefund = $daysSinceDelivery <= 7;
                     @endphp
                     @if($canRefund)
-                        <button x-data="{ refundOpen: false }" class="flex-1 flex items-center justify-center px-6 py-3 bg-red-600 text-white hover:bg-red-700 rounded-xl transition-colors font-medium">
-                            <i class="fa-solid fa-rotate-left mr-2"></i> Request Refund
-                        </button>
-                        <div x-show="refundOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                        <div x-data="{ refundOpen: false }">
+                            <button @click="refundOpen = true" class="flex-1 flex items-center justify-center px-6 py-3 bg-red-600 text-white hover:bg-red-700 rounded-xl transition-colors font-medium">
+                                <i class="fa-solid fa-rotate-left mr-2"></i> Request Refund
+                            </button>
+                            <div x-show="refundOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                             <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
                                 <h3 class="text-xl font-bold text-gray-900 mb-4">Request Refund</h3>
                                 <p class="text-gray-600 mb-4">If defected/size issue related than you can refund within 7 days fully money will be refunded.</p>
@@ -226,6 +249,7 @@
                                     </div>
                                 </form>
                             </div>
+                        </div>
                         </div>
                     @endif
                 @endif
